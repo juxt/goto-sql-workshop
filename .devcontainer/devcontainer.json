@@ -1,0 +1,15 @@
+{
+  "name": "SQL Workshop Environment",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/postgresql:1": {}
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y postgresql-client",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-ossdata.vscode-postgresql"
+      ]
+    }
+  }
+}
