@@ -1,10 +1,6 @@
--- Create the database
-CREATE DATABASE workshop_db;
+-- @conn postgres
 
--- Connect to the database
-\c workshop_db
-
--- Create a table
+-- @block Create a table
 CREATE TABLE employees (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
@@ -12,10 +8,13 @@ CREATE TABLE employees (
     salary INTEGER
 );
 
--- Insert sample data
+-- @block Insert sample data
 INSERT INTO employees (name, department, salary) VALUES
     ('John Doe', 'IT', 75000),
     ('Jane Smith', 'HR', 65000),
     ('Bob Johnson', 'Finance', 80000),
     ('Alice Brown', 'Marketing', 70000),
     ('Charlie Davis', 'IT', 85000);
+
+-- @block
+DROP TABLE employees
