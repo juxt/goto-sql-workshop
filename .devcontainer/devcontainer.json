@@ -11,7 +11,7 @@
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or the host.
-	"forwardPorts": [5432],
+	"forwardPorts": [5432,5433],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip install --user -r requirements.txt",
@@ -34,10 +34,21 @@
 						"database": "postgres",
 						"username": "postgres",
 						"password": "postgres"
+					},
+					{
+						"previewLimit": 50,
+						"server": "localhost",
+						"port": 5433,
+						"driver": "PostgreSQL",
+						"name": "xtdb",
+						"database": "",
+						"username": "",
+						"password": ""
 					}
 				],
 				"sqltools.autoConnectTo": [
-					"postgres"
+					"postgres",
+					"xtdb"
 				]
 			}
 		}
