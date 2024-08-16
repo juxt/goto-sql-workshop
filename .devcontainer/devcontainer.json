@@ -45,10 +45,6 @@
 						"username": "",
 						"password": ""
 					}
-				],
-				"sqltools.autoConnectTo": [
-					"postgres",
-					"xtdb"
 				]
 			}
 		}
