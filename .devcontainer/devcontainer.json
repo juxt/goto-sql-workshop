@@ -45,7 +45,8 @@
 						"username": "",
 						"password": ""
 					}
-				]
+				],
+				"sqltools.results.reuseTabs": "connection"
 			}
 		}
 	}
