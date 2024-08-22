@@ -11,7 +11,7 @@
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or the host.
-	"forwardPorts": [5432,5433],
+	"forwardPorts": [/*5432,*/5433],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip install --user -r requirements.txt",
@@ -25,6 +25,7 @@
 			],
 			"settings": {
 				"sqltools.connections": [
+					/*
 					{
 						"previewLimit": 50,
 						"server": "localhost",
@@ -35,6 +36,7 @@
 						"username": "postgres",
 						"password": "postgres"
 					},
+					*/
 					{
 						"previewLimit": 50,
 						"server": "localhost",
