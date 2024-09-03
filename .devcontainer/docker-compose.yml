@@ -30,7 +30,7 @@ services:
   #  network_mode: host
 
   xtdb:
-    image: ghcr.io/xtdb/xtdb-standalone-ea:latest
+    image: ghcr.io/xtdb/xtdb-standalone-ea:2024-09-02
     restart: unless-stopped
     volumes:
       - xtdb-data:/var/lib/xtdb
