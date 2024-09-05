@@ -7,6 +7,7 @@ services:
       context: ..
       # Modify this container to install things that can't be installed as http://containers.dev/features
       dockerfile: .devcontainer/Dockerfile
+    container_name: app
 
     volumes:
       - ../..:/workspaces:cached
@@ -31,6 +32,7 @@ services:
 
   xtdb:
     image: ghcr.io/xtdb/xtdb-standalone-ea:2024-09-02
+    container_name: xtdb
     restart: unless-stopped
     volumes:
       - xtdb-data:/var/lib/xtdb
