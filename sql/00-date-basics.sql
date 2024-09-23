@@ -51,3 +51,5 @@ ORDER BY _id;
 SELECT _id, EXTRACT(YEAR FROM AGE(CURRENT_DATE, (PolicyDetails).dob)) AS years_old
 FROM InsurancePolicies
 ORDER BY _id;
+
+-- Ask the audience, what interesting questions do you have?

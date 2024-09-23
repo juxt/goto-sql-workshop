@@ -81,7 +81,7 @@ FROM InsurancePolicies FOR VALID_TIME ALL AS p
 JOIN InsurancePolicies FOR VALID_TIME ALL AS p_before
     ON p._id = p_before._id
         AND p_before._valid_time PRECEDES p._valid_time
-ORDER BY p._id
+ORDER BY p._id;
 
 -- When have gaps in their policy, and low long?
 -- @block
@@ -90,6 +90,4 @@ FROM InsurancePolicies FOR VALID_TIME ALL AS p
 JOIN InsurancePolicies FOR VALID_TIME ALL AS p_before
     ON p._id = p_before._id
         AND p_before._valid_time PRECEDES p._valid_time
-        AND NOT p_before._valid_time IMMEDIATELY PRECEDES p._valid_time
-
--- 
+WHERE NOT p_before._valid_time IMMEDIATELY PRECEDES p._valid_time;
