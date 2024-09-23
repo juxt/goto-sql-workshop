@@ -24,7 +24,9 @@
 			"extensions": [
 				"mtxr.sqltools",
 				"mtxr.sqltools-driver-pg",
-				"hediet.vscode-drawio"
+				"hediet.vscode-drawio",
+				"ms-toolsai.jupyter",
+				"ms-python.python"
 			],
 			"settings": {
 				"sqltools.connections": [
