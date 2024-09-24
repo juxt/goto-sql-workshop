@@ -22,6 +22,10 @@ INSERT INTO InsurancePolicies (
     ('POL123464', 'George Harris', 'Health', {dob: DATE '1978-09-09'}, DATE '2024-09-01', DATE '2025-09-01', 1150.00, 130000.00),
     ('POL123465', 'Hannah Jones',   'Auto',  {dob: DATE '1983-10-10'}, DATE '2024-10-01', DATE '2025-10-01', 1000.00, 70000.00);
 
+-- @block
+SELECT * FROM insurancepolicies
+
+
 -- Here's how you get the dob:
 -- @block
 SELECT _id, (PolicyDetails).dob
@@ -34,7 +38,7 @@ SELECT _id, EXTRACT(MONTH FROM _valid_from)
 FROM InsurancePolicies
 ORDER BY _id;
 
--- Here's how you calcualte the interval between two dates:
+-- Here's how you calculate the interval between two dates:
 -- @block
 SELECT _id, AGE(_valid_to, _valid_from)
 FROM InsurancePolicies
