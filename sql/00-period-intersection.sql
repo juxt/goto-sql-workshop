@@ -36,52 +36,27 @@ INSERT INTO Policies (
     ('POL123464', 9, 'Health', DATE '2024-09-01', DATE '2025-09-01', 1150.00, 130000.00),
     ('POL123465', 10, 'Auto', DATE '2024-10-01', DATE '2025-10-01', 1000.00, 70000.00);
 
--- NOTE: this would be more interesing if it was something that would affect the premium
--- Now, let's say a user got married on the 20th May 2024, how would you update the user table?
--- @block
-UPDATE Users FOR PORTION OF VALID_TIME FROM DATE '2024-05-20' TO EOT
-SET UserName = 'Alice Williams'
-WHERE _id = 3;
 
--- Now let's check that:
+-- Should you want to start again
 -- @block
-SELECT *
+ERASE FROM Users
+
+-- @block 
+SELECT *, _valid_from FROM Users ORDER BY _valid_from
+
+-- Question 1:
+-- Let's say a user (Alice Johnson) got married on the 20th May 2024, and requests to update her name as 'Alice Williams'. 
+-- How would you update the user table?
+
+-- @block 
+INSERT INTO Users
+SELECT * EXCLUDE UserName, 'Alice Williams' AS UserName, DATE '2024-05-20' AS _valid_from  
 FROM Users
-ORDER BY _id;
+WHERE UserName = 'Alice Johnson'
 
--- How can we get a complete view of every time the Users table changed?
 -- @block
-SELECT *, _valid_from
-FROM Users FOR VALID_TIME ALL
-ORDER BY _id;
-
--- How can we get a complete view of every time either table changed for each user?
--- @block
-SETTING DEFAULT VALID_TIME ALL
 SELECT Users._id, Users.UserName, Policies.PolicyType
-FROM Users
+FROM Users FOR ALL VALID_TIME
 JOIN Policies ON Policies.UserId = Users._id
 WHERE Users._valid_time OVERLAPS Policies._valid_time
-ORDER BY Users._id;
-
--- Bonus: When was each of these changes valid?
--- @block
-SETTING DEFAULT VALID_TIME ALL
-SELECT Users.UserName, Policies.PolicyType--, Users._valid_time * Policies._valid_time
-FROM Users
-JOIN Policies
-    ON Policies.UserId = Users._id
-WHERE Users._valid_time OVERLAPS Policies._valid_time
-ORDER BY Users._id;
-
--- Double Bonus: How would you extend this to join onto a third table? Say the Claims table?
--- @block
-SETTING DEFAULT VALID_TIME ALL
-SELECT Users.UserName, Policies.PolicyType--, Users._valid_time * Policies._valid_time * Claims._valid_time
-FROM Users
-JOIN Policies
-    ON Policies.UserId = Users._id
-JOIN Claims
-    ON Claims.PolicyId = Policies._id
-WHERE OVERLAPS(Users._valid_time, Policies._valid_time, Claims._valid_time)
 ORDER BY Users._id;
