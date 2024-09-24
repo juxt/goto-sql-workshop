@@ -5,7 +5,7 @@
 INSERT INTO Users (_id, UserName, DateOfBirth, _valid_from, _valid_to) VALUES
     (1, 'John Doe', DATE '1980-01-01', DATE '2024-01-01', NULL),
     (2, 'Jane Smith', DATE '1985-02-02', DATE '2024-01-01', DATE '2024-03-01'),
-    (3, 'Alice Johnson', DATE '1970-03-03', DATE '2024-02-01', DATE '2024-04-01'),
+    (3, 'Alice Johnson', DATE '1970-03-03', DATE '2024-02-01', NULL),
     (4, 'Bob Brown', DATE '1990-04-04', DATE '2024-04-01', NULL),
     (5, 'Charlie Davis', DATE '1982-05-05', DATE '2024-02-01', DATE '2024-03-01');
 
@@ -37,7 +37,15 @@ INSERT INTO Policies (
 ERASE FROM Users
 
 -- @block 
-SELECT *, _valid_from FROM Users ORDER BY _valid_from
+SELECT *, _valid_from FROM Users FOR VALID_TIME AS OF DATE '2024-02-01'
+ORDER BY _valid_from
+
+-- @block 
+SELECT *, _valid_from 
+FROM Users FOR ALL VALID_TIME
+ORDER BY _valid_from
+
+
 
 -- Question 1:
 -- Let's say a user (Alice Johnson) got married on the 20th May 2024, and requests to update her name as 'Alice Williams'. 
