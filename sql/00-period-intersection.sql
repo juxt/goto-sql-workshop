@@ -2,17 +2,12 @@
 
 -- Let's denormalise our Policies table and create a Users table:
 -- @block
-INSERT INTO Users (_id, UserName, DateOfBirth, _valid_from) VALUES
-    (1, 'John Doe', DATE '1980-01-01', DATE '2024-01-01'),
-    (2, 'Jane Smith', DATE '1985-02-02', DATE '2024-01-01'),
-    (3, 'Alice Johnson', DATE '1970-03-03', DATE '2024-01-01'),
-    (4, 'Bob Brown', DATE '1990-04-04', DATE '2024-01-01'),
-    (5, 'Charlie Davis', DATE '1982-05-05', DATE '2024-01-01'),
-    (6, 'Diana Evans', DATE '1988-06-06', DATE '2024-01-01'),
-    (7, 'Evan Foster', DATE '1975-07-07', DATE '2024-01-01'),
-    (8, 'Fiona Green', DATE '1992-08-08', DATE '2024-01-01'),
-    (9, 'George Harris', DATE '1978-09-09', DATE '2024-01-01'),
-    (10, 'Hannah Jones', DATE '1983-10-10', DATE '2024-01-01');
+INSERT INTO Users (_id, UserName, DateOfBirth, _valid_from, _valid_to) VALUES
+    (1, 'John Doe', DATE '1980-01-01', DATE '2024-01-01', NULL),
+    (2, 'Jane Smith', DATE '1985-02-02', DATE '2024-01-01', DATE '2024-03-01'),
+    (3, 'Alice Johnson', DATE '1970-03-03', DATE '2024-02-01', DATE '2024-04-01'),
+    (4, 'Bob Brown', DATE '1990-04-04', DATE '2024-04-01', NULL),
+    (5, 'Charlie Davis', DATE '1982-05-05', DATE '2024-02-01', DATE '2024-03-01');
 
 -- Our Policies table now looks like this:
 -- @block
