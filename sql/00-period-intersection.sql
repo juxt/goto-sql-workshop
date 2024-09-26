@@ -63,3 +63,12 @@ FROM Users FOR ALL VALID_TIME
 JOIN Policies ON Policies.UserId = Users._id
 WHERE Users._valid_time OVERLAPS Policies._valid_time
 ORDER BY Users._id;
+
+-- @block
+SELECT *, _valid_time FROM users for all VALID_TIME
+
+-- @block
+UPDATE Users
+FOR VALID_TIME FROM DATE '2024-05-20' TO NULL
+SET UserName = 'Alice Williams'
+WHERE UserName = 'Alice Johnson';
