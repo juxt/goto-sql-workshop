@@ -51,11 +51,32 @@ ORDER BY _valid_from
 -- Let's say a user (Alice Johnson) got married on the 20th May 2024, and requests to update her name as 'Alice Williams'. 
 -- How would you update the user table?
 
+-- @block
+UPDATE Users
+FOR VALID_TIME FROM DATE '2024-05-20' TO NULL
+SET UserName = 'Alice Williams'
+WHERE UserName = 'Alice Johnson';
+
 -- @block 
 INSERT INTO Users
 SELECT * EXCLUDE UserName, 'Alice Williams' AS UserName, DATE '2024-05-20' AS _valid_from  
 FROM Users
 WHERE UserName = 'Alice Johnson'
+
+-- v1 2024-01-01 -> 2024-06-01
+-- v2 2024-06-01 -> ∞
+
+-- select: query as of current-time (single version)
+-- insert: overwrite whole range
+
+-- v1 Johnson 2024-01-01 -> 2024-05-20
+-- v1 Williams 2024-05-20 -> ∞
+
+-- update: updates all versions
+
+-- v1 Johnson 2024-01-01 -> 2024-05-20
+-- v1 Williams 2024-05-20 -> 2024-06-01
+-- v2 Williams 2024-06-01 -> ∞
 
 -- @block
 SELECT Users._id, Users.UserName, Policies.PolicyType

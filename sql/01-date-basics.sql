@@ -34,7 +34,9 @@ ORDER BY _id;
 
 -- Here's how you extract the month from a date:
 -- @block
-SELECT _id, EXTRACT(MONTH FROM _valid_from)
+SELECT _id, 
+       (EXTRACT(YEAR FROM _valid_from))::text || '-' || (EXTRACT(MONTH FROM _valid_from))::text
+       
 FROM InsurancePolicies
 ORDER BY _id;
 
