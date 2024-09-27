@@ -31,7 +31,7 @@ services:
   #  network_mode: host
 
   xtdb:
-    image: ghcr.io/xtdb/xtdb:nightly
+    image: ghcr.io/xtdb/xtdb:2.0.0-beta2
     container_name: xtdb
     restart: unless-stopped
     volumes:
