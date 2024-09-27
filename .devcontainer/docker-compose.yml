@@ -36,8 +36,6 @@ services:
     restart: unless-stopped
     volumes:
       - xtdb-data:/var/lib/xtdb
-      - ./xtdb.yaml:/config/xtdb.yaml
-    command: ["-f", "/config/xtdb.yaml"]
     network_mode: host
 
 volumes:
