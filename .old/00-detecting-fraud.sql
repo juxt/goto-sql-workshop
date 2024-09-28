@@ -1,4 +1,5 @@
 -- @conn xtdb
+-- Bitemporal
 -- In this example, we believed that charlie was a smoker.
 -- We then found he was a smoker.
 -- We did a historic update and then were able to reconcile this.

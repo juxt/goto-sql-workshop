@@ -34,18 +34,29 @@ INSERT INTO Policies (
 
 -- Should you want to start again
 -- @block
-ERASE FROM Users
-
--- @block 
-SELECT *, _valid_from FROM Users ORDER BY _valid_from
-
--- Question 1:
--- Let's say a user (Alice Johnson) got married on the 20th May 2024, and requests to update her name as 'Alice Williams'. 
--- How would you update the user table?
-
--- @block 
 INSERT INTO Users
-SELECT * EXCLUDE UserName, 'Alice Williams' AS UserName, DATE '2024-05-20' AS _valid_from  
+  SELECT
+    * EXCLUDE UserName,
+    'Alice Williams' AS UserName,
+    DATE '2024-05-20' AS _valid_from
+  FROM Users
+  WHERE UserName = 'Alice Williams';
+
+-- @block
+SELECT DURATION 'PT1M'
+
+-- @block
+SELECT (bins.p).xt$from, COUNT(*)
+FROM
+ Users FOR VALID_TIME ALL,
+ UNNEST(RANGE_BINS(INTERVAL 'P30D', PERIOD(TIMESTAMP '2024-01-01T00:00:00Z', TIMESTAMP '2024-06-01T00:00:00Z'))) AS bins(p)
+WHERE PERIOD((bins.p).xt$from, (bins.p).xt$from) OVERLAPS Users._valid_time
+GROUP BY (bins.p).xt$from;
+
+
+-- Now let's check that:
+-- @block
+SELECT *
 FROM Users
 WHERE UserName = 'Alice Johnson'
 
@@ -55,3 +66,26 @@ FROM Users FOR ALL VALID_TIME
 JOIN Policies ON Policies.UserId = Users._id
 WHERE Users._valid_time OVERLAPS Policies._valid_time
 ORDER BY Users._id;
+
+-- Bonus: When was each of these changes valid?
+-- @block
+SETTING DEFAULT VALID_TIME ALL
+SELECT Users.UserName, Policies.PolicyType, Users._valid_time * Policies._valid_time
+FROM Users
+JOIN Policies
+    ON Policies.UserId = Users._id
+WHERE Users._valid_time OVERLAPS Policies._valid_time
+ORDER BY Users._id;
+
+-- Double Bonus: How would you extend this to join onto a third table? Say the Claims table?
+-- @block
+SETTING DEFAULT VALID_TIME ALL
+SELECT Users.UserName, Policies.PolicyType--, Users._valid_time * Policies._valid_time * Claims._valid_time
+FROM Users
+JOIN Policies
+    ON Policies.UserId = Users._id
+JOIN Claims
+    ON Claims.PolicyId = Policies._id
+WHERE OVERLAPS(Users._valid_time, Policies._valid_time, Claims._valid_time)
+ORDER BY Users._id;
+
