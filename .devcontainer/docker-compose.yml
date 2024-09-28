@@ -34,10 +34,6 @@ services:
     image: ghcr.io/xtdb/xtdb:2.0.0-beta2
     container_name: xtdb
     restart: unless-stopped
-    volumes:
-      - xtdb-data:/var/lib/xtdb
     network_mode: host
 
 volumes:
-  postgres-data:
-  xtdb-data:
