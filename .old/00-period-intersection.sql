@@ -5,7 +5,7 @@
 INSERT INTO Users (_id, UserName, DateOfBirth, _valid_from, _valid_to) VALUES
     (1, 'John Doe', DATE '1980-01-01', DATE '2024-01-01', NULL),
     (2, 'Jane Smith', DATE '1985-02-02', DATE '2024-01-01', DATE '2024-03-01'),
-    (3, 'Alice Johnson', DATE '1970-03-03', DATE '2024-02-01', DATE '2024-04-01'),
+    (3, 'Alice Johnson', DATE '1970-03-03', DATE '2024-02-01', NULL),
     (4, 'Bob Brown', DATE '1990-04-04', DATE '2024-04-01', NULL),
     (5, 'Charlie Davis', DATE '1982-05-05', DATE '2024-02-01', DATE '2024-03-01');
 
@@ -34,6 +34,30 @@ INSERT INTO Policies (
 
 -- Should you want to start again
 -- @block
+ERASE FROM Users
+
+-- @block 
+SELECT *, _valid_from FROM Users FOR VALID_TIME AS OF DATE '2024-02-01'
+ORDER BY _valid_from
+
+-- @block 
+SELECT *, _valid_from 
+FROM Users FOR ALL VALID_TIME
+ORDER BY _valid_from
+
+
+
+-- Question 1:
+-- Let's say a user (Alice Johnson) got married on the 20th May 2024, and requests to update her name as 'Alice Williams'. 
+-- How would you update the user table?
+
+-- @block
+UPDATE Users
+FOR VALID_TIME FROM DATE '2024-05-20' TO NULL
+SET UserName = 'Alice Williams'
+WHERE UserName = 'Alice Johnson';
+
+-- @block 
 INSERT INTO Users
   SELECT
     * EXCLUDE UserName,
@@ -60,6 +84,21 @@ SELECT *
 FROM Users
 WHERE UserName = 'Alice Johnson'
 
+-- v1 2024-01-01 -> 2024-06-01
+-- v2 2024-06-01 -> ∞
+
+-- select: query as of current-time (single version)
+-- insert: overwrite whole range
+
+-- v1 Johnson 2024-01-01 -> 2024-05-20
+-- v1 Williams 2024-05-20 -> ∞
+
+-- update: updates all versions
+
+-- v1 Johnson 2024-01-01 -> 2024-05-20
+-- v1 Williams 2024-05-20 -> 2024-06-01
+-- v2 Williams 2024-06-01 -> ∞
+
 -- @block
 SELECT Users._id, Users.UserName, Policies.PolicyType
 FROM Users FOR ALL VALID_TIME
@@ -67,25 +106,11 @@ JOIN Policies ON Policies.UserId = Users._id
 WHERE Users._valid_time OVERLAPS Policies._valid_time
 ORDER BY Users._id;
 
--- Bonus: When was each of these changes valid?
 -- @block
-SETTING DEFAULT VALID_TIME ALL
-SELECT Users.UserName, Policies.PolicyType, Users._valid_time * Policies._valid_time
-FROM Users
-JOIN Policies
-    ON Policies.UserId = Users._id
-WHERE Users._valid_time OVERLAPS Policies._valid_time
-ORDER BY Users._id;
+SELECT *, _valid_time FROM users for all VALID_TIME
 
--- Double Bonus: How would you extend this to join onto a third table? Say the Claims table?
 -- @block
-SETTING DEFAULT VALID_TIME ALL
-SELECT Users.UserName, Policies.PolicyType--, Users._valid_time * Policies._valid_time * Claims._valid_time
-FROM Users
-JOIN Policies
-    ON Policies.UserId = Users._id
-JOIN Claims
-    ON Claims.PolicyId = Policies._id
-WHERE OVERLAPS(Users._valid_time, Policies._valid_time, Claims._valid_time)
-ORDER BY Users._id;
-
+UPDATE Users
+FOR VALID_TIME FROM DATE '2024-05-20' TO NULL
+SET UserName = 'Alice Williams'
+WHERE UserName = 'Alice Johnson';
