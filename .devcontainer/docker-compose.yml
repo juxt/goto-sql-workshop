@@ -35,5 +35,3 @@ services:
     container_name: xtdb
     restart: unless-stopped
     network_mode: host
-
-volumes:
