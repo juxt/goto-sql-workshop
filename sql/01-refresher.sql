@@ -74,7 +74,7 @@ INSERT INTO policies_types_01 (_id, max_premium_amount) VALUES
 ('Travel', 50);
 
 
--- Q11. Join the two tables together
+-- Q11. Join the two tables together where policies_types_01._id is the policies_01.policy_type
 -- @block
 SELECT ...;
 
